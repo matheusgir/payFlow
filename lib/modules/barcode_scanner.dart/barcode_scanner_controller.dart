@@ -61,13 +61,14 @@ class BarcodeScannerController {
   void scanWithCamera() {
     status = BarcodeScannerStatus.available();
     Future.delayed(Duration(seconds: 20)).then((value) {
-      if (status.hasBarcode == false)
+      if (status.hasBarcode == false) {
         status = BarcodeScannerStatus.error("Timeout de leitura de boleto");
+      }
     });
   }
 
   void listenCamera() {
-    if (cameraController!.value.isStreamingImages == false)
+    if (cameraController!.value.isStreamingImages == false) {
       cameraController!.startImageStream((cameraImage) async {
         if (status.stopScanner == false) {
           try {
@@ -103,10 +104,12 @@ class BarcodeScannerController {
                 bytes: bytes, inputImageData: inputImageData);
             scannerBarCode(inputImageCamera);
           } catch (e) {
+            // ignore: avoid_print
             print(e);
           }
         }
       });
+    }
   }
 
   void dispose() {
